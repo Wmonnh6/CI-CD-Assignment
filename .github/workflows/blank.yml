@@ -33,7 +33,13 @@ jobs:
       - name: Build MAUI project for Windows only
         run: |
           mkdir logs
-          dotnet build MealBrain/MealBrain.csproj -f net8.0-windows10.0.19041.0 -r win-x64 --configuration Release --no-restore > logs/build.log 2>&1
+          msbuild MealBrain/MealBrain.csproj `
+          /t:Build `
+          /p:TargetFramework=net8.0-windows10.0.19041.0 `
+          /p:RuntimeIdentifier=win-x64 `
+          /p:Configuration=Release `
+          /p:RestorePackages=false `
+          > logs/build.log 2>&1
         continue-on-error: true
 
       - name: Upload build log
