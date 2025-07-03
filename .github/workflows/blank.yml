@@ -25,12 +25,12 @@ jobs:
         run: dotnet workload install maui
 
       - name: Restore NuGet packages
-        run: dotnet restore MealBrain/MealBrain.sln
+        run: dotnet restore MealBrain/MealBrain.csproj -r win10-x64
 
-      - name: Build solution and log output
+      - name: Build MAUI project for Windows only
         run: |
           mkdir logs
-          dotnet build MealBrain/MealBrain.sln --configuration Release --no-restore > logs/build.log 2>&1
+          dotnet build MealBrain/MealBrain.csproj -f net8.0-windows10.0.19041.0 -r win10-x64 --configuration Release --no-restore > logs/build.log 2>&1
         continue-on-error: true
 
       - name: Upload build log
