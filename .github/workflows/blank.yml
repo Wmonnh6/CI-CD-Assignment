@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build .NET MAUI Project
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'  
+
+      - name: Install MAUI Workload
+        run: dotnet workload install maui
+
+      - name: Restore NuGet packages
+        run: dotnet restore
+
+      - name: Build solution and log output
+        run: |
+          mkdir logs
+          dotnet build MealBrain.sln --configuration Release --no-restore > logs/build.log 2>&1
+        continue-on-error: true
+
+      - name: Upload build log
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-log
+          path: logs/build.log
+
+      - name: Fail if build has errors
+        run: |
+          $log = Get-Content logs/build.log -Raw
+          if ($log -match "error") {
+            Write-Host "❌ Build failed. See logs/build.log"
+            exit 1
+          } else {
+            Write-Host "✅ Build succeeded."
+          }
+        shell: pwsh
