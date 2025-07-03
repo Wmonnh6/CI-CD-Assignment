@@ -25,7 +25,7 @@ jobs:
         run: dotnet workload install maui
 
       - name: Restore NuGet packages
-        run: dotnet restore MealBrain/MealBrain.csproj -p:RuntimeIdentifier=win10-x64
+        run: dotnet restore MealBrain/MealBrain.csproj
 
       - name: Build MAUI project for Windows only
         run: |
