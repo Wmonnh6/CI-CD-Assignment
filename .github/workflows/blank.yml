@@ -25,12 +25,12 @@ jobs:
         run: dotnet workload install maui
 
       - name: Restore NuGet packages
-        run: dotnet restore
+        run: dotnet restore MealBrain/MealBrain.sln
 
       - name: Build solution and log output
         run: |
           mkdir logs
-          dotnet build MealBrain.sln --configuration Release --no-restore > logs/build.log 2>&1
+          dotnet build MealBrain/MealBrain.sln --configuration Release --no-restore > logs/build.log 2>&1
         continue-on-error: true
 
       - name: Upload build log
@@ -43,9 +43,9 @@ jobs:
         run: |
           $log = Get-Content logs/build.log -Raw
           if ($log -match "error") {
-            Write-Host "❌ Build failed. See logs/build.log"
+            Write-Host "Build failed. See logs/build.log"
             exit 1
           } else {
-            Write-Host "✅ Build succeeded."
+            Write-Host "Build succeeded."
           }
         shell: pwsh
