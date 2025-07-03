@@ -28,18 +28,12 @@ jobs:
         run: dotnet workload list
 
       - name: Restore NuGet packages
-        run: dotnet restore MealBrain/MealBrain.csproj --runtime win-x64
+        run: dotnet restore MealBrain/MealBrain.csproj -p:TargetFramework=net8.0-windows10.0.19041.0 -p:RuntimeIdentifier=win-x64
 
       - name: Build MAUI project for Windows only
         run: |
           mkdir logs
-          msbuild MealBrain/MealBrain.csproj `
-          /t:Build `
-          /p:TargetFramework=net8.0-windows10.0.19041.0 `
-          /p:RuntimeIdentifier=win-x64 `
-          /p:Configuration=Release `
-          /p:RestorePackages=false `
-          > logs/build.log 2>&1
+          dotnet build MealBrain/MealBrain.csproj -p:TargetFramework=net8.0-windows10.0.19041.0 -p:RuntimeIdentifier=win-x64 -c Release --no-restore > logs/build.log 2>&1
         continue-on-error: true
 
       - name: Upload build log
