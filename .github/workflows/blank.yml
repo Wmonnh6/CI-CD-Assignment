@@ -45,10 +45,17 @@ jobs:
       - name: Fail if build has errors
         run: |
           $log = Get-Content logs/build.log -Raw
-          if ($log -match "error") {
-            Write-Host "Build failed. See logs/build.log"
-            exit 1
+          $errorLine = $log -split "`n" | Where-Object { $_ -match '\d+\s+Error\(s\)' } | Select-Object -Last 1
+          if ($errorLine -match '(\d+)\s+Error\(s\)') {
+            $errorCount = [int]$matches[1]
+            if ($errorCount -ne 0) {
+              Write-Host "Build failed. See logs/build.log"
+              exit 1
+            } else {
+              Write-Host "Build succeeded."
+            }
           } else {
-            Write-Host "Build succeeded."
+            Write-Host "Could not determine error count. Assuming failure."
+            exit 1
           }
         shell: pwsh
