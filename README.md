@@ -26,25 +26,6 @@ generate grocery lists with the total amount of each ingredient needed.
 Users can register for a cloud account which will allow them to sync their
 recipes across devices.
 
-## Team
-
-### 495 Students 
-
-Aaron Voymas (Team Manager)
-
-Wessley Monnin
-
-### 394 Students
-
-Marcel Demers
-
-Justin Mosley
-
-### 294 Students
-
-Jacob Pantall
-
-Daniel Jose
 
 ## Prerequisites
 
@@ -97,3 +78,4 @@ In Visual Studio select the MealBrain launch profile,
 Press F5 or click the Start button
 
 Do not forget to disable Developer Mode when done.
+
